@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar from "../Sidebar/Sidebar";
+import Sidebar from "../sidebar/Sidebar";
 import Header from "../header/Header";
 import useAuth from '../hooks/auth/useAuth';
 
