@@ -1,0 +1,126 @@
+/* ================= SIDENAV ROOT ================= */
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+
+  background: #0f172a;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  transition: width 0.3s ease;
+
+  overflow: hidden;
+}
+
+/* OPEN / COLLAPSED */
+.sidenav.open {
+  width: 260px;
+}
+
+.sidenav.collapsed {
+  width: 70px;
+}
+
+/* ================= TOGGLE ================= */
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: white;
+
+  font-size: 22px;
+
+  padding: 12px;
+
+  cursor: pointer;
+}
+
+/* ================= LOGO ================= */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 15px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+
+  border-radius: 20px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ================= MENU ================= */
+.menu {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 10px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 15px;
+
+  color: white;
+  text-decoration: none;
+
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  background: #1e293b;
+  border-radius: 8px;
+}
+
+/* ACTIVE LINK */
+.menu-item.active {
+  background: #334155;
+  border-radius: 8px;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  margin-top: auto;
+  padding: 15px;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+
+  background: #ef4444;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+/* ================= COLLAPSED MODE ================= */
+.sidenav.collapsed .menu-item {
+  justify-content: center;
+}
+
+.sidenav.collapsed .logo-text {
+  display: none;
+}
+
+.sidenav.collapsed .logout-btn {
+  font-size: 12px;
+}

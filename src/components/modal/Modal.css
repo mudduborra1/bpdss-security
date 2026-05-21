@@ -1,0 +1,100 @@
+/* =========================
+   MODAL OVERLAY
+========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: grid;
+  place-items: center;
+
+  z-index: -1;
+  visibility: hidden;
+  opacity: 0;
+
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* OPEN STATE */
+.show-modal {
+  z-index: 999;
+  visibility: visible;
+  opacity: 1;
+}
+
+/* =========================
+   MODAL BOX
+========================= */
+
+.modal-container {
+  width: 90vw;
+  max-width: 500px;
+
+  background: var(--white);
+  border-radius: var(--borderRadius);
+
+  padding: 2rem;
+
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  position: relative;
+
+  box-shadow: var(--shadow-2);
+
+  /* smooth pop animation */
+  transform: scale(0.8);
+  transition: transform 0.25s ease;
+}
+
+/* scale in when modal opens */
+.show-modal .modal-container {
+  transform: scale(1);
+}
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.close-modal-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  font-size: 1.5rem;
+
+  background: transparent;
+  border: none;
+
+  color: var(--red-dark);
+
+  cursor: pointer;
+
+  transition: var(--transition);
+}
+
+.close-modal-btn:hover {
+  transform: rotate(90deg);
+  color: red;
+}
+
+/* =========================
+   MODAL CONTENT
+========================= */
+
+.modal-container h3 {
+  font-size: 1.4rem;
+  color: var(--grey-900);
+}
+
+.modal-container p {
+  font-size: 1rem;
+  color: var(--grey-600);
+  line-height: 1.5;
+}

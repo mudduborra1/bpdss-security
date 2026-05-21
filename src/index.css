@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Base theme only ===== */
+:root {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+}
+
+/* reset */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+}
+
+/* IMPORTANT: remove centered layout */
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
+
+/* optional smooth fonts */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

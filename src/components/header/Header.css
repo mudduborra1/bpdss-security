@@ -1,0 +1,157 @@
+/* ================= HEADER ROOT ================= */
+/* ================= LEFT SECTION ================= */
+.header-left h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-right: 18px;;
+}
+
+/* ================= RIGHT SECTION ================= */
+
+.header-right {
+  display: flex;
+  align-items: center; /* vertical center */
+  justify-content: flex-end;
+  gap: 18px;
+
+  height: 100%;
+}
+
+/* ================= SEARCH BOX ================= */
+.search-box input {
+  width: 220px;
+  padding: 8px 12px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin: 16px 0 16px 0;
+
+  outline: none;
+
+  font-size: 14px;
+
+  transition: 0.2s;
+
+  background-color: #ffffff;
+
+}
+
+.search-box input:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* ================= NOTIFICATION BUTTON ================= */
+.notification-btn {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  background: #fff;
+  border: 1px solid #e2e8f0;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  transition: 0.2s;
+
+  line-height: 1;
+
+  margin: 16px 0 16px 0;
+}
+
+.notification-btn:hover {
+  background: #f1f5f9;
+}
+
+/* Badge */
+.notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+
+  background: white;
+  color: red;
+
+  font-size: 12px;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+
+  font-weight: 700;  /* ✅ bold */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ================= PROFILE SECTION ================= */
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding-left: 10px;
+
+  border-left: 1px solid #e2e8f0;
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+
+  background: #7091dc;
+  color: white;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 14px;
+
+  margin: 16px 0 16px 0;
+
+}
+
+/* Profile text */
+.profile-info h4 {
+  font-size: 14px;
+  margin-bottom: 2px;
+  color: #64748b;
+  
+}
+
+.profile-info p {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ================= RESPONSIVE ================= */
+@media screen and (max-width: 768px) {
+  .header {
+    left: 80px;
+    padding: 0 10px;
+  }
+
+  .search-box input {
+    width: 120px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+}
