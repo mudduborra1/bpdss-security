@@ -11,9 +11,7 @@ export default function Dashboard() {
 
 const navigate = useNavigate();
 
-const [historyCount, setHistoryCount] = useState(0);
-
-  
+const [historyCount, setHistoryCount] = useState(0);  
   
 return (
     <Layout>
