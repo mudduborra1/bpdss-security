@@ -7,14 +7,25 @@ import {
 
 import Dashboard from "../pages/Dashboard";
 import Guards from "../pages/Guards";
+
 import Home  from "../pages/Home";
-import Attendance from "../pages/Attendance";
 import Incidents from "../pages/Incidents";
 import Sites from "../pages/Sites";
-import Login from "../pages/login/Login";
+import Login from "../pages/Login";
 import Shifts from "../pages/Shifts";
 
 import ProtectedRoute from "../components/protectedroute/ProtectedRoute";
+import AttendanceSheet from "../components/attendance/AttendanceSheet";
+
+
+import EmployeeDetails from "../pages/EmployeeDetails ";
+import EmployeeCreate from "../pages/EmployeeCreate";
+import EmployeeUpdate from "../pages/EmployeeUpdate";
+
+import DepartmentDetails from "../pages/DepartmentDetails";
+
+
+
 
 function AppRoutes() {
   return (
@@ -44,6 +55,32 @@ function AppRoutes() {
           }
         />
 
+         {/* ✅ Guards */}
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoute>
+              <EmployeeDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/employees/new" element={<ProtectedRoute><EmployeeCreate /></ProtectedRoute>} />
+
+        <Route path="/employees/:id" element={<ProtectedRoute><EmployeeUpdate /></ProtectedRoute>} />
+
+
+         {/* ✅ Guards */}
+        <Route
+          path="/departments"
+          element={
+            <ProtectedRoute>
+              <DepartmentDetails />
+            </ProtectedRoute>
+          }
+        />
+
+
         {/* ✅ Guards */}
         <Route
           path="/guards"
@@ -59,7 +96,7 @@ function AppRoutes() {
           path="/attendance"
           element={
             <ProtectedRoute>
-              <Attendance />
+              <AttendanceSheet />
             </ProtectedRoute>
           }
         />

@@ -1,8 +1,11 @@
-import AppRoutes from './routes/AppRoutes'
+import SessionTimeout from "./components/context/SessionTimeout";
+import AppRoutes from "./routes/AppRoutes";
 
-function App() {
-  
-  return <AppRoutes />
+export function App() {
+  return (
+    <>
+      <SessionTimeout />
+      <AppRoutes />
+    </>
+  );
 }
-
-export default App

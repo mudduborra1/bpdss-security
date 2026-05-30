@@ -9,6 +9,7 @@ export default function Modal({ isOpen, closeModal }) {
         <button className="close-modal-btn" onClick={closeModal}>
           <FaTimes />
         </button>
+        
 
         {/* Modal Content */}
         <h3>Modal Title</h3>
