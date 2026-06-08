@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
-import useAuth from "../hooks/auth/useAuth";
+// import useAuth from "../hooks/auth/useAuth";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function Layout({ children }) {
-  const { auth } = useAuth();
+  // const { auth } = useAuth();
 
   // Sidebar collapsed state
   const [collapsed, setCollapsed] = useState(true);

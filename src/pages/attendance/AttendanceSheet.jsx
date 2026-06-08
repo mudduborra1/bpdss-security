@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import Layout from "../layout/Layout";
+import Layout from "../../components/layout/Layout";
+
+import { Search } from "lucide-react";
 
 export default function AttendanceSheet() {
 
@@ -15,6 +17,8 @@ export default function AttendanceSheet() {
   const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const studentsPerPage = 10;
 
@@ -36,6 +40,8 @@ export default function AttendanceSheet() {
         "/api/v1/employees",
       );
 
+     
+
       // Sort alphabetically
       const sortedStudents = response.data.data.sort(
         (a, b) => a.name.localeCompare(b.name)
@@ -43,8 +49,9 @@ export default function AttendanceSheet() {
 
       // Default status
       const formattedStudents = sortedStudents.map(
-        (student) => ({
+        (student,index) => ({
           ...student,
+          s_no: index + 1,
           status: "present",
         })
       );
@@ -61,13 +68,21 @@ export default function AttendanceSheet() {
     }
   };
 
+  const filteredStudents = students.filter((student) =>
+  student.name
+    ?.toLowerCase()
+    .includes(searchTerm.toLowerCase()) ||
+  String(student.id)
+    .includes(searchTerm)
+);
+
   // =========================
   // Pagination
   // =========================
 
-  const totalPages = Math.ceil(
-    students.length / studentsPerPage
-  );
+ const totalPages = Math.ceil(
+  filteredStudents.length / studentsPerPage
+);
 
   const indexOfLastStudent =
     currentPage * studentsPerPage;
@@ -75,10 +90,10 @@ export default function AttendanceSheet() {
   const indexOfFirstStudent =
     indexOfLastStudent - studentsPerPage;
 
-  const currentStudents = students.slice(
-    indexOfFirstStudent,
-    indexOfLastStudent
-  );
+ const currentStudents = filteredStudents.slice(
+  indexOfFirstStudent,
+  indexOfLastStudent
+);
 
   // =========================
   // Change Attendance
@@ -141,24 +156,25 @@ export default function AttendanceSheet() {
   // =========================
 
   const absentStudents = useMemo(() => {
-
-    return students.filter(
-      (student) => student.status === "absent"
-    );
-
-  }, [students]);
-
+  return students
+    .filter((student) => student.status === "absent")
+    .map((student, index) => ({
+      ...student,
+    }));
+}, [students]);
   // =========================
   // Leave Students
   // =========================
 
   const leaveStudents = useMemo(() => {
+  return students
+    .filter((student) => student.status === "leave")
+    .map((student, index) => ({
+      ...student,
+      }));
+}, [students]);
 
-    return students.filter(
-      (student) => student.status === "leave"
-    );
 
-  }, [students]);
 
   // =========================
   // Submit
@@ -214,7 +230,7 @@ export default function AttendanceSheet() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
 
           <h1 className="text-3xl font-bold text-gray-800">
-            Employees Attendance Sheet
+            Batch Attendance
           </h1>
 
           <input
@@ -236,127 +252,133 @@ export default function AttendanceSheet() {
 
         {/* Attendance Table */}
 
-        {!loading && (
+        {/* Attendance Table */}
 
-          <div className="overflow-x-auto">
+{!loading && (
 
-            <table className="w-full border border-gray-300">
+  <>
+    {/* Search */}
 
-              <thead className="bg-gray-200">
+    <div className="mb-4 flex justify-between items-center">
 
-                <tr>
+      <div className="relative w-full md:w-96">
 
-                  <th className="border p-3 text-left">
-                    ID
-                  </th>
+        <Search
+          size={18}
+          className="absolute left-3 top-3 text-gray-400"
+        />
 
-                  <th className="border p-3 text-left">
-                    Student Name
-                  </th>
+        <input
+          type="text"
+          placeholder="Search Employee..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2"
+        />
 
-                  <th className="border p-3 text-center">
+      </div>
+
+      <span className="hidden md:block text-gray-600">
+        {filteredStudents.length} Employees
+      </span>
+
+    </div>
+
+    {/* Table */}
+
+    <div className="overflow-x-auto">
+
+      <table className="w-full border border-gray-300">
+
+        <thead className="bg-gray-200">
+
+          <tr>
+
+            <th className="border p-3 text-left">
+              S.No.
+            </th>
+
+            <th className="border p-3 text-left">
+              ID
+            </th>
+
+            <th className="border p-3 text-left">
+              Employee Name
+            </th>
+
+            <th className="border p-3 text-center">
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {currentStudents.map((student, index) => (
+
+            <tr
+              key={student.id}
+              className="hover:bg-gray-50"
+            >
+
+              <td className="border p-3">
+                {student.s_no}
+              </td>
+
+              <td className="border p-3">
+                {student.id}
+              </td>
+
+              <td className="border p-3">
+                {student.name}
+              </td>
+
+              <td className="border p-3 text-center">
+
+                <select
+                  value={student.status}
+                  onChange={(e) =>
+                    handleStatusChange(
+                      student.id,
+                      e.target.value
+                    )
+                  }
+                  className="border rounded px-3 py-1"
+                >
+                  <option value="present">
                     Present
-                  </th>
+                  </option>
 
-                  <th className="border p-3 text-center">
+                  <option value="absent">
                     Absent
-                  </th>
+                  </option>
 
-                  <th className="border p-3 text-center">
+                  <option value="leave">
                     Leave
-                  </th>
+                  </option>
 
-                </tr>
+                </select>
 
-              </thead>
+              </td>
 
-              <tbody>
+            </tr>
 
-                {currentStudents.map((student) => (
+          ))}
 
-                  <tr
-                    key={student.id}
-                    className="hover:bg-gray-50"
-                  >
+        </tbody>
 
-                    <td className="border p-3">
-                      {student.id}
-                    </td>
+      </table>
 
-                    <td className="border p-3">
-                      {student.name}
-                    </td>
+    </div>
 
-                    {/* Present */}
+  </>
 
-                    <td className="border text-center">
-
-                      <input
-                        type="radio"
-                        name={`status-${student.id}`}
-                        checked={
-                          student.status === "present"
-                        }
-                        onChange={() =>
-                          handleStatusChange(
-                            student.id,
-                            "present"
-                          )
-                        }
-                      />
-
-                    </td>
-
-                    {/* Absent */}
-
-                    <td className="border text-center">
-
-                      <input
-                        type="radio"
-                        name={`status-${student.id}`}
-                        checked={
-                          student.status === "absent"
-                        }
-                        onChange={() =>
-                          handleStatusChange(
-                            student.id,
-                            "absent"
-                          )
-                        }
-                      />
-
-                    </td>
-
-                    {/* Leave */}
-
-                    <td className="border text-center">
-
-                      <input
-                        type="radio"
-                        name={`status-${student.id}`}
-                        checked={
-                          student.status === "leave"
-                        }
-                        onChange={() =>
-                          handleStatusChange(
-                            student.id,
-                            "leave"
-                          )
-                        }
-                      />
-
-                    </td>
-
-                  </tr>
-
-                ))}
-
-              </tbody>
-
-            </table>
-
-          </div>
-        )}
+)}
 
         {/* Pagination */}
 
@@ -460,87 +482,153 @@ export default function AttendanceSheet() {
 
         {/* Absent Students */}
 
-        <div className="mt-10 bg-red-50 border border-red-200 rounded-xl p-5">
+        <table className="w-full border border-collapse">
 
-          <h2 className="text-2xl font-bold text-red-700 mb-4">
-            Absent Students
-          </h2>
+  <thead>
 
-          {absentStudents.length === 0 ? (
+    <tr>
+      <th
+        colSpan={3}
+        className="border p-4 text-center bg-yellow-100 text-xl font-bold"
+      >
+        Absent Students
+      </th>
+    </tr>
 
-            <p className="text-gray-600">
-              No absent students
-            </p>
+    <tr>
+      <th className="border p-2 text-center">
+        S.No
+      </th>
 
-          ) : (
+      <th className="border p-2 text-center">
+        ID
+      </th>
 
-            <div className="space-y-2">
+      <th className="border p-2 text-left">
+        Employee Name
+      </th>
+    </tr>
 
-              {absentStudents.map((student) => (
+  </thead>
 
-                <div
-                  key={student.id}
-                  className="bg-white border rounded-lg p-3 flex justify-between"
-                >
+  <tbody>
 
-                  <span>
-                    ID: {student.id}
-                  </span>
+    {absentStudents.length === 0 ? (
 
-                  <span>
-                    {student.name}
-                  </span>
+      <tr>
+        <td
+          colSpan={3}
+          className="border p-4 text-center text-gray-500"
+        >
+          No employees on Absent
+        </td>
+      </tr>
 
-                </div>
+    ) : (
 
-              ))}
+      absentStudents.map((student) => (
 
-            </div>
-          )}
+        <tr
+          key={student.id}
+          className="hover:bg-gray-50"
+        >
 
-        </div>
+          <td className="border p-2 text-center">
+            {student.s_no}
+          </td>
 
-        {/* Leave Students */}
+          <td className="border p-2 text-center">
+            {student.id}
+          </td>
 
-        <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-xl p-5">
+          <td className="border p-2">
+            {student.name}
+          </td>
 
-          <h2 className="text-2xl font-bold text-yellow-700 mb-4">
-            Leave Students
-          </h2>
+        </tr>
 
-          {leaveStudents.length === 0 ? (
+      ))
 
-            <p className="text-gray-600">
-              No students on leave
-            </p>
+    )}
 
-          ) : (
+  </tbody>
 
-            <div className="space-y-2">
+</table>
 
-              {leaveStudents.map((student) => (
+         {/* leave Students */}
 
-                <div
-                  key={student.id}
-                  className="bg-white border rounded-lg p-3 flex justify-between"
-                >
+       <table className="w-full border border-collapse">
 
-                  <span>
-                    ID: {student.id}
-                  </span>
+  <thead>
 
-                  <span>
-                    {student.name}
-                  </span>
+    <tr>
+      <th
+        colSpan={3}
+        className="border p-4 text-center bg-yellow-100 text-xl font-bold"
+      >
+        Leave Students
+      </th>
+    </tr>
 
-                </div>
+    <tr>
+      <th className="border p-2 text-center">
+        S.No
+      </th>
 
-              ))}
+      <th className="border p-2 text-center">
+        ID
+      </th>
 
-            </div>
-          )}
+      <th className="border p-2 text-left">
+        Employee Name
+      </th>
+    </tr>
 
-        </div>
+  </thead>
+
+  <tbody>
+
+    {leaveStudents.length === 0 ? (
+
+      <tr>
+        <td
+          colSpan={3}
+          className="border p-4 text-center text-gray-500"
+        >
+          No employees on leave
+        </td>
+      </tr>
+
+    ) : (
+
+      leaveStudents.map((student, index) => (
+
+        <tr
+          key={student.id}
+          className="hover:bg-gray-50"
+        >
+
+          <td className="border p-2 text-center">
+            {student.s_no}
+          </td>
+
+          <td className="border p-2 text-center">
+            {student.id}
+          </td>
+
+          <td className="border p-2">
+            {student.name}
+          </td>
+
+        </tr>
+
+      ))
+
+    )}
+
+  </tbody>
+
+</table>
 
         {/* Submit */}
 

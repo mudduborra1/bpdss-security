@@ -32,10 +32,10 @@ export default function EmployeeListView({
                 <div className="flex items-center gap-2">
                   <img
                     src={`http://localhost:8069${emp.image}`}
-                    alt={emp.name}
+                    alt={emp['name']}
                     className="w-10 h-10 rounded-full"
                   />
-                  {/* <span>{emp.name}</span> */}
+                  { <span>{emp.name}</span> }
                 </div>
               </td>
 
@@ -44,11 +44,11 @@ export default function EmployeeListView({
               </td>
 
               <td className="p-3">
-                {emp.department}
+                {emp.department_id[1]}
               </td>
 
               <td className="p-3">
-                {emp.manager}
+                {emp.parent_id[1]}
               </td>
 
               <td className="p-3">

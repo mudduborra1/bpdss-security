@@ -10,13 +10,21 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import Layout from "../components/layout/Layout";
+import Layout from "../../components/layout/Layout";
 
-import { fetchEmployees } from "../api/axiosClient";
-import EmployeeListView from "../components/employee/EmployeeListView";
-import EmployeeKanbanView from "../components/employee/EmployeeKanbanView";
+import { fetchEmployees } from "../../api/employeeClient";
+import EmployeeListView from "../../components/employee/EmployeeListView";
+import EmployeeKanbanView from "../../components/employee/EmployeeKanbanView";
+
+import EmployeeControlPanel from "../../components/layout/EmployeeControlPanel";
+
+import CommonHeader from "../../components/layout/CommonHeader";
+
+
+
+
 
 export default function EmployeeDetails() {
 
@@ -34,6 +42,12 @@ export default function EmployeeDetails() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const { id } = useParams();
+
+//   const currentIndex = employees.findIndex(
+//   (emp) => String(emp.id) === String(id)
+// );
+
 
   // Pagination
   const [currentPage, setCurrentPage] =
@@ -63,13 +77,13 @@ const loadEmployees = async () => {
   setLoading(true);
 
   try {
-    const response = await fetchEmployees();
+    const employees = await fetchEmployees();
+    const records = Array.isArray(employees) ? employees : [];
 
-    console.log("👉 FULL RESPONSE:", response);
 
-    const records = response?.data || [];
+    // const records = Array.isArray(response) ? response : [];
 
-    console.log("✅ FINAL EMPLOYEE ARRAY:", records);
+    console.log("👉 FULL RESPONSE:", records);
 
     setEmployees(records);
 
@@ -80,6 +94,37 @@ const loadEmployees = async () => {
     setLoading(false);
   }
 };
+
+
+// const currentIndex = employees.findIndex(
+//   (emp) => emp.id === employee.id
+// );
+
+// const prevEmployee =
+//   currentIndex > 0
+//     ? employees[currentIndex - 1]
+//     : null;
+
+// const nextEmployee =
+//   currentIndex < employees.length - 1
+//     ? employees[currentIndex + 1]
+//     : null;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// const handlePrevious = () => {
+//   if (currentIndex > 0) {
+//     navigate(`/employees/${employees[currentIndex - 1].id}`);
+//   }
+// };
+
+// const handleNext = () => {
+//   if (currentIndex < employees.length - 1) {
+//     navigate(`/employees/${employees[currentIndex + 1].id}`);
+//   }
+// };
+
 
 
   // =========================
@@ -164,33 +209,22 @@ const loadEmployees = async () => {
   
     return (
       <Layout>
+
+
+
+
+
         {/* Control Bar */}
-        <div className="flex justify-between items-center mb-4 p-2 bg-gray-100 rounded">
-          <h2 className="text-xl font-bold capitalize">{view} View</h2>
+        <CommonHeader
+          title="Employees"
+          mode="details"
+          view={view}
+          onViewChange={setView}
+          onCreate={() => navigate("/employees/new")}
+          onSearch={() => setSearchOpen(true)}
+          // onViewChange={setView}
+        />
           
-          {/* View Switcher Buttons */}
-          <div className="flex gap-2 bg-white p-1 rounded border">
-            <button
-              type="button"
-              onClick={() => setView("list")}
-              className={`px-3 py-1 rounded transition-colors ${
-                view === "list" ? "bg-blue-600 text-white font-medium" : "hover:bg-gray-100"
-              }`}
-            >
-              List
-            </button>
-            <button
-              type="button"
-              onClick={() => setView("kanban")}
-              className={`px-3 py-1 rounded transition-colors ${
-                view === "kanban" ? "bg-blue-600 text-white font-medium" : "hover:bg-gray-100"
-              }`}
-            >
-              Kanban
-            </button>
-          </div>
-        </div>
-  
         {/* Main Content Area */}
         <div className="mt-4">
           {view === "list" ? (

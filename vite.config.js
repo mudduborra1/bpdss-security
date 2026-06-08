@@ -6,11 +6,16 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // ✅ FIXED: Changed 'localhost' to '127.0.0.1' to bypass IPv6 resolution bugs
-        target: "http://127.0.0.1:8069", 
+        target: "http://localhost:8069", // Odoo backend
         changeOrigin: true,
         secure: false,
-        cookieDomainRewrite: "localhost", 
+        // optional: rewrite path if needed
+        // rewrite: (path) => path.replace(/^\/api/, "/api"),
+      },
+      "/web": {
+        target: "http://localhost:8069", // ✅ add this if you want to load Odoo images
+        changeOrigin: true,
+        secure: false,
       },
     },
   },

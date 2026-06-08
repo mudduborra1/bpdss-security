@@ -1,5 +1,5 @@
 import styles from './style.module.css';
-import { setTitle } from '../../utils/generalFunctions';
+import { setTitle } from '../../utils/setPageTitle';
 
 import { useRef, useState, useEffect } from "react";
 import axios from '../../lib/axios';

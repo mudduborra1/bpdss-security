@@ -1,5 +1,5 @@
 import '../../assets/main.css'
-import { setTitle } from '../../utils/generalFunctions';
+import { setTitle } from '../../utils/setPageTitle';
 
 export const Home = () => {
     setTitle("Home");

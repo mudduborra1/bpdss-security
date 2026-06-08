@@ -15,7 +15,7 @@ import {
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import useAuth from "../hooks/auth/useAuth";
+import { useAuth } from "../hooks/auth/useAuth";
 
 axios.defaults.withCredentials = true;
 

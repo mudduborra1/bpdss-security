@@ -36,13 +36,13 @@ export default function EmployeeKanbanView({
               <p>
                 <strong>Department:</strong>
                 {" "}
-                {emp.department}
+                {emp.department_id[1]}
               </p>
 
               <p>
                 <strong>Manager:</strong>
                 {" "}
-                {emp.manager}
+                {emp.parent_id[1]}
               </p>
 
               <p>

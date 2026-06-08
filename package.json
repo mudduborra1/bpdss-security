@@ -18,6 +18,8 @@
     "@material-tailwind/react": "^2.1.10",
     "axios": "^1.16.1",
     "bootstrap-icons": "^1.13.1",
+    "html5-qrcode": "^2.3.8",
+    "jwt-decode": "^3.1.2",
     "lucide-react": "^1.16.0",
     "open-iconic": "^1.1.1",
     "path": "^0.12.7",

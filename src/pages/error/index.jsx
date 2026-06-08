@@ -1,6 +1,6 @@
 import './style.css';
 import { Link, useNavigate } from "react-router-dom";
-import { setTitle } from '../../utils/generalFunctions';
+import { setTitle } from '../../utils/setPageTitle';
 
 export const Error = (props) => {
     setTitle(`Error ${props.code}`);

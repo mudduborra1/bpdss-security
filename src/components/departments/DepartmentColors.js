@@ -12,3 +12,6 @@ export const odooColors = {
   10: "#22C55E",
   11: "#6366F1",
 };
+
+
+export const MAX_VISIBLE = 8;

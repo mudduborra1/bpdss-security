@@ -15,19 +15,42 @@ import Login from "../pages/Login";
 import Shifts from "../pages/Shifts";
 
 import ProtectedRoute from "../components/protectedroute/ProtectedRoute";
-import AttendanceSheet from "../components/attendance/AttendanceSheet";
+
+import AttendanceSheet from "../pages/attendance/AttendanceSheet";
+import BatchAttendance from "../pages/attendance/AttendanceBatch";
+import BiometricLogs from "../pages/attendance/BiometricLogs";
+import ManualAttendance from "../pages/attendance/ManualAttendance";
+import AttendanceRegister from "../pages/attendance/AttendanceRegister";
+import AttendanceDashboard from "../pages/attendance/AttendanceDashboard";
+import AttendanceBatchList from "../pages/attendance/AttendanceBatchList";
+import Attendance_Qr from "../pages/attendance/Attendance_Qr";
 
 
-import EmployeeDetails from "../pages/EmployeeDetails ";
-import EmployeeCreate from "../pages/EmployeeCreate";
-import EmployeeUpdate from "../pages/EmployeeUpdate";
 
-import DepartmentDetails from "../pages/DepartmentDetails";
+
+
+
+
+
+
+
+import EmployeeDetails from "../pages/employees/EmployeeDetails ";
+import EmployeeCreate from "../pages/employees/EmployeeCreate";
+import EmployeeUpdate from "../pages/employees/EmployeeUpdate";
+
+import DepartmentDetails from "../pages/departments/DepartmentDetails";
+import { setPageTitle } from "../utils/setPageTitle";
+import { useEffect } from "react";
 
 
 
 
 function AppRoutes() {
+
+  useEffect(() => {
+    setPageTitle("My App");
+  }, []);
+
   return (
     <BrowserRouter>
 
@@ -100,6 +123,80 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+         {/* ✅ Attendance QR SCAN*/}
+         <Route
+          path="/attendance/scan"
+          element={
+            <ProtectedRoute>
+              <Attendance_Qr/>
+            </ProtectedRoute>
+          }
+        />
+
+             {/* ✅ Attendance Batch*/}
+        <Route
+          path="/attendance/batch"
+          element={
+            <ProtectedRoute>
+              <BatchAttendance />
+            </ProtectedRoute>
+          }
+        />
+
+               {/* ✅ Attendance Biometric*/}
+        <Route
+          path="/attendance/biometric"
+          element={
+            <ProtectedRoute>
+              <BiometricLogs />
+            </ProtectedRoute>
+          }
+        />
+
+           {/* ✅ Attendance Manual*/}
+        <Route
+          path="/attendance/manual"
+          element={
+            <ProtectedRoute>
+              <ManualAttendance />
+            </ProtectedRoute>
+          }
+        />
+
+           {/* ✅ Attendance Register*/}
+        <Route
+          path="/attendance/register"
+          element={
+            <ProtectedRoute>
+              <AttendanceRegister />
+            </ProtectedRoute>
+          }
+        />
+
+           {/* ✅ Attendance BatchList*/}
+
+         <Route
+          path="/attendance/batchlist"
+          element={
+            <ProtectedRoute>
+              <AttendanceBatchList />
+            </ProtectedRoute>
+          }
+        />
+
+         
+
+         {/* ✅ Attendance Dashboard*/}
+        <Route
+          path="/attendance/dashboard"
+          element={
+            <ProtectedRoute>
+              <AttendanceDashboard />
+            </ProtectedRoute>
+          }
+        />
+          
 
         {/* ✅ Shifts */}
         <Route

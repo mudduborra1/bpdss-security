@@ -1,122 +1,111 @@
-import Axios from "axios";
-import { data } from "react-router-dom";
+// axios.js
+import axios from "axios";
+import { isTokenValid, logout, getToken } from "../utils/auth";
 
 // =========================
 // AXIOS INSTANCE
 // =========================
-const axiosClient = Axios.create({
-
-  baseURL: "http://localhost:8069",
-
+const axiosClient = axios.create({
+  baseURL: "/api", 
   withCredentials: true,
-
   headers: {
-    "Content-Type":
-      "application/json",
+    "Content-Type": "application/json",
   },
-
   timeout: 15000,
 });
-
-
-
-// =========================
-// FETCH EMPLOYEES
-// =========================
-
-export async function fetchEmployees() {
-  try {
-    const response = await Axios.get("/api/v1/employees");
-
-    console.log("✅ API RESPONSE:", response);
-
-    return response.data; // ✅ RETURN FULL RESPONSE
-  } catch (error) {
-    console.error("❌ API ERROR:", error);
-    return [];
-  }
-}
-
-export async function fetchEmployeeById(id) {
-  try {
-
-    const response = await Axios.get(`/api/v1/employees/${id}`)
-        
-          withCredentials: true,
-       
-
-    console.log("✅ API RESPONSE:", response);
-
-    return response; // ✅ RETURN FULL RESPONSE
-
-
-  } catch (error) {
-    console.error("❌ API ERROR:", error);
-    return [];
-  }
-}
-
-
-export async function fetchDepartments() {
-  try {
-    const response = await Axios.get("/api/v1/departments");
-
-
-
-    console.log("✅ API RESPONSE:", response.data);
-
-    return response.data; // ✅ RETURN FULL RESPONSE
-  } catch (error) {
-    console.error("❌ API ERROR:", error);
-    return [];
-  }
-}
-
-
-// export const fetchEmployees =
-//   async () => {
-
-//     try {
-
-//       const response = await Axios.get(
-
-//       "/api/v1/employees"
-
-//     );
-
-//     console.log(response)
-     
-//     return response.data.records || [];
-
-//     } catch (error) {
-
-//       console.log(
-//         "FETCH EMPLOYEES ERROR:",
-//         error.response?.data ||
-//         error.message
-//       );
-
-//       return [];
-//     }
-//   };
 
 // =========================
 // RESPONSE INTERCEPTOR
 // =========================
 axiosClient.interceptors.response.use(
-
-  (response) => response,
-
+  (response) => {
+    if (response.data && response.data.error) {
+      console.log("ODOO RPC ERROR DETECTED:", response.data.error);
+      const errDetail =
+        response.data.error.data?.message ||
+        response.data.error.message ||
+        response.data.error;
+      const rpcError = new Error(errDetail);
+      rpcError.rpcData = response.data.error;
+      return Promise.reject(rpcError);
+    }
+    return response;
+  },
   (error) => {
-
-    console.log(
-      "AXIOS ERROR:",
-      error.response?.data ||
-      error.message
-    );
-
+    console.log("AXIOS HARDWARE/NETWORK ERROR:", error.response?.data || error.message);
     return Promise.reject(error);
   }
 );
+
+// =========================
+// AUTH
+// =========================
+export async function loginConnect(db, usernameOrEmail, password) {
+  try {
+    const response = await axiosClient.post("/v1/auth/login", {
+      jsonrpc: "2.0",
+      method: "call",
+      params: { db, login: usernameOrEmail, password },
+    });
+    return response.data?.result || response.data;
+  } catch (error) {
+    console.error("❌ [loginConnect] Exception:", error.message || error);
+    throw error;
+  }
+}
+
+export async function logout_disconnect() {
+  try {
+    await axiosClient.post("/v1/auth/logout");
+  } catch (error) {
+    console.error("Logout failed:", error);
+  } finally {
+    localStorage.clear();
+    window.location.href = "/login";
+  }
+}
+
+
+export async function fetchEmployeeQrById(id) {
+  try {
+    const response = await axiosClient.get(`/v1/employees/${id}/qr_image`);
+    return response.data?.result || response.data;
+  } catch (error) {
+    console.error("❌ Error fetching employee QR:", error.message);
+    return null;
+  }
+}
+
+// =========================
+// OTHER RESOURCES
+// =========================
+
+
+// =========================
+// ATTENDANCE
+// =========================
+export async function saveAttendance(payload) {
+  try {
+    const response = await axiosClient.post("/v1/attendance/save", {
+      jsonrpc: "2.0",
+      method: "call",
+      params: payload,
+    });
+    return response.data?.result || response.data;
+  } catch (error) {
+    console.error("❌ Error saving attendance:", error.message);
+    throw error;
+  }
+}
+
+export async function fetchAttendanceBatchesList() {
+  try {
+    const response = await axiosClient.get("/v1/attendance/batchlist");
+    return response.data?.result || response.data;
+  } catch (error) {
+    console.error("❌ Error fetching attendance batches:", error.message);
+    throw error;
+  }
+}
 
 export default axiosClient;

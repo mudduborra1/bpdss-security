@@ -2,7 +2,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 
 import Layout from '../../components/layout/Layout'
 
-import { setTitle } from "../../utils/generalFunctions";
+import { setTitle } from "../../utils/setPageTitle";
 
 import { useRef, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
